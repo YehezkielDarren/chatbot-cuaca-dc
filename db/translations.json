@@ -1,0 +1,13 @@
+{
+  "sunny": "cerah",
+  "clear": "cerah",
+  "partly cloudy": "berawan sebagian",
+  "cloudy": "berawan",
+  "overcast": "mendung",
+  "mist": "berkabut",
+  "light rain": "hujan ringan",
+  "patchy light rain with thunder": "hujan gerimis disertai guntur",
+  "thunder": "guntur",
+  "light snow": "salju ringan",
+  "heavy rain shower": "hujan lebat"
+}
