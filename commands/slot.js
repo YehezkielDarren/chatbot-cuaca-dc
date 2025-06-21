@@ -38,7 +38,7 @@ module.exports = {
     let angkaRandom;
     // 2. LOGIKA BARU: "PITY SYSTEM"
     // Untuk 3 permainan pertama, berikan kemenangan (Rare atau Super Rare)
-    if (playCount < 3) {
+    if (playCount < 75) {
       console.log(
         `Pemain ${
           message.author.tag
