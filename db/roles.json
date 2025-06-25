@@ -1,0 +1,14 @@
+[
+  {
+    "roleId": "1387425752999399566",
+    "label": "Pengujung",
+    "emoji": "🎮",
+    "style": "Primary"
+  },
+  {
+    "roleId": "1387432247644389466",
+    "label": "Programmer",
+    "emoji": "💻",
+    "style": "Success"
+  }
+]

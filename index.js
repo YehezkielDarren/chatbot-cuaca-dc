@@ -1,6 +1,12 @@
 require("dotenv").config();
 
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  Collection,
+  Events,
+  MessageFlags,
+} = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -17,10 +23,6 @@ app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
 });
 
-// Setup client
-// Guilds: Diperlukan untuk informasi server.
-// GuildMessages: Diperlukan untuk mendeteksi pesan di server.
-// MessageContent: Diperlukan untuk membaca isi pesan (wajib diaktifkan di Developer Portal).
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -83,6 +85,50 @@ client.on("messageCreate", (message) => {
   } catch (error) {
     console.error(error);
     message.reply("Terjadi error saat menjalankan perintah tersebut!");
+  }
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isButton() || !interaction.customId.startsWith("role-"))
+    return;
+
+  const member = interaction.member;
+  const roleId = interaction.customId.split("-")[1];
+
+  try {
+    const role = await interaction.guild.roles.fetch(roleId);
+    if (!role) {
+      // DIUBAH: Menggunakan 'flags' untuk ephemeral
+      await interaction.reply({
+        content: "Role yang terkait dengan tombol ini tidak ditemukan.",
+        flags: [MessageFlags.Ephemeral],
+      });
+      return;
+    }
+
+    if (member.roles.cache.has(role.id)) {
+      await member.roles.remove(role);
+      // DIUBAH: Menggunakan 'flags' untuk ephemeral
+      await interaction.reply({
+        content: `Role **${role.name}** telah dihapus dari Anda.`,
+        flags: [MessageFlags.Ephemeral],
+      });
+    } else {
+      await member.roles.add(role);
+      // DIUBAH: Menggunakan 'flags' untuk ephemeral
+      await interaction.reply({
+        content: `Selamat! Anda sekarang memiliki role **${role.name}**.`,
+        flags: [MessageFlags.Ephemeral],
+      });
+    }
+  } catch (error) {
+    console.error("Terjadi error pada sistem role:", error);
+    // DIUBAH: Menggunakan 'flags' untuk ephemeral
+    await interaction.reply({
+      content:
+        "Gagal memproses role. Pastikan hirarki dan izin bot sudah benar.",
+      flags: [MessageFlags.Ephemeral],
+    });
   }
 });
 
